@@ -1,0 +1,23 @@
+Using:
+
+Ionic
+AngularJS
+ngCordova
+jsSHA
+ngTwitter - Probably won't be able to use ngTwitter due to lack of DM's.
+
+Bower?
+
+Change:
+
+Callback URL to own redirect (must end up at http://localhost/callback)
+Look into securing the private application key - use Firebase?
+
+Notes:
+
+Manually removed ngCordova's oAuth plugin, included ngCordovaOauth manually
+
+http://stackoverflow.com/questions/7537419/how-to-filter-android-logcat-by-application
+http://blog.ionic.io/displaying-the-twitter-feed-within-your-ionic-app/
+
+REST API vs Streaming API
