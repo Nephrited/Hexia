@@ -1,0 +1,17 @@
+<ion-view view-title="{{timeline[0].user.name}}'s Timeline">
+	<ion-content class="has-header" padding="true">
+		<div class="card padding alignmiddle">
+			<p><img class="profileimage" src="{{timeline[0].user.profile_image_url}}"><p>
+			<p>{{timeline[0].user.name}}</p>
+			<p>@{{timeline[0].user.screen_name}}</p>
+			<p>{{timeline[0].user.description}}</p>
+
+		</div>
+		<ion-list>
+			<ion-item ng-repeat="tweet in timeline" class="card padding">
+			<p class="item-body wrapper">{{tweet.text}}</p>
+			<p class="subdued">{{tweet.created_at}}</p>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>

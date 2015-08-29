@@ -4,9 +4,6 @@ Ionic
 AngularJS
 ngCordova
 jsSHA
-ngTwitter - Probably won't be able to use ngTwitter due to lack of DM's.
-
-Bower?
 
 Change:
 
@@ -21,3 +18,12 @@ http://stackoverflow.com/questions/7537419/how-to-filter-android-logcat-by-appli
 http://blog.ionic.io/displaying-the-twitter-feed-within-your-ionic-app/
 
 REST API vs Streaming API
+
+Display requirements.
+https://dev.twitter.com/overview/terms/display-requirements
+
+Removed closePopup functions from classes as modals were not used
+
+Todo - 
+
+	Validation on new Tweets and DM's

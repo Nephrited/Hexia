@@ -1,4 +1,4 @@
-angular.module('hexia', ['ionic','controllers','ngCordova','ngResource'])
+angular.module('hexia', ['ionic','controllers','ngCordova','ngResource','ionic-material'])
 
 .run(function($ionicPlatform) {
 	$ionicPlatform.ready(function() {
@@ -38,12 +38,45 @@ angular.module('hexia', ['ionic','controllers','ngCordova','ngResource'])
 			}
 		})
 
-		.state('menu.landing', {
-			url: "/landing",
+		.state('menu.feed', {
+			url: "/feed",
 			views: {
 				'menuContentView': {
-					templateUrl: "templates/_landing.html"
+					templateUrl: 'templates/_feed.html',
+					controller: 'FeedController'
 				}
 			}
-		});
+		})
+
+		.state('menu.mentions', {
+			url: "/mentions",
+			views: {
+				'menuContentView': {
+					templateUrl: 'templates/_mentions.html',
+					controller: 'MentionController'
+				}
+			}
+		})
+
+		.state('menu.messages', {
+			url: "/messages",
+			views: {
+				'menuContentView': {
+					templateUrl: 'templates/_messages.html',
+					controller: 'MessageController'
+				}
+			}
+		})
+
+		.state('menu.timeline', {
+			url: "/timeline",
+			views: {
+				'menuContentView': {
+					templateUrl: 'templates/_timeline.html',
+					controller: 'TimelineController'
+				}
+			}
+		})
+
+		;
 });

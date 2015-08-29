@@ -1,0 +1,18 @@
+<ion-view view-title="Twitter Feed">
+	<ion-content class="has-header" padding="true">
+		<ion-list>
+			<ion-item ng-repeat="tweet in feed" class="card padding">
+			<div ng-click="viewProfile(tweet.user.screen_name)" class="userinfo">
+				<div>{{tweet.user.name}}</div>
+				<div class="subdued">@{{tweet.user.screen_name}}</div>
+			</div>
+			<span ng-click="viewProfile(tweet.user.screen_name)" class="item-avatar"><img src="{{tweet.user.profile_image_url}}"></span>
+			<p class="item-body wrapper">{{tweet.text}}</p>
+			<p class="subdued">{{tweet.created_at}}</p>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+	<button id="incident-fab" class="button button-positive button-fab button-fab-bottom-right" ng-click="openPopup()">
+		<i class="icon ion-plus"></i>
+	</button>
+</ion-view>

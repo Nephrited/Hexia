@@ -1,4 +1,23 @@
-var utils = angular.module('utils',[])
+var utils = angular.module('utilities',[])
+
+.value('menuList', [{
+		text: 'Twitter Feed',
+		icon: 'ion-home',
+		state: 'menu.feed'
+	},{
+		text: 'View Mentions',
+		icon: 'ion-help',
+		state: 'menu.mentions'
+	},{
+		text: 'View Direct Messages',
+		icon: 'ion-android-exit',
+		state: 'menu.messages'
+	},{
+		text: 'Logout',
+		icon: 'ion-android-exit',
+		click: 'logout()'
+	}
+])
 
 .factory('localstorage', function($window) {
 	return {
@@ -83,7 +102,7 @@ var utils = angular.module('utils',[])
         var userToken = angular.fromJson(getUserToken());
         console.log(getUserToken());
         var signatureParams = {
-            oauth_consumer_key: clientId,
+            oauth_consumer_key: applicationID,
             oauth_nonce: $cordovaOauthUtility.createNonce(10),
             oauth_signature_method: "HMAC-SHA1",
             oauth_token: userToken.oauth_token,
@@ -95,14 +114,14 @@ var utils = angular.module('utils',[])
     }
 
     return {
-        initialize: function() {
+        authenticate: function() {
             var deferred = $q.defer();
             var token = getUserToken();
 
             if (token !== undefined) {
                 deferred.resolve(true);
             } else {
-                $cordovaOauth.twitter(clientId, clientSecret).then(function(result) {
+                $cordovaOauth.twitter(applicationID, applicationSecret).then(function(result) {
                     setUserToken(result);
                     deferred.resolve(true);
                 }, function(error) {
@@ -112,10 +131,14 @@ var utils = angular.module('utils',[])
             return deferred.promise;
         },
         isAuthenticated: function() {
-            return getUserToken() !== undefined;
+            if(getUserToken() !== undefined) {
+            	return true;
+            } else {
+            	return false;
+            }
         },
         getHomeTimeline: function() {
-            var requestUrl = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
+            var requestUrl = 'https://api.twitter.com/1.1/statuses/home_timeline.json?trim_user=true&exclude_replies=true&include_entities=false';
             createTwitterSignature('GET', requestUrl);
             return $resource(requestUrl).query();
         },
