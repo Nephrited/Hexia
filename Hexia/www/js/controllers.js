@@ -11,12 +11,14 @@ angular.module('controllers', ['ngCordovaOauth','utilities','dummy'])
 
 		twitter.authenticate().then(function(result) {
 			if(result === true) {
-				console.log("signed in!");
-				$state.go('menu.feed');
+				$scope.error = undefined;
+				$state.go("menu.feed");
 			} else {
 				console.log("error!");
 			}
 			console.log("Test");
+		},function(error) {
+			$scope.error = "Unable to Authenticate";
 		});
 	};
 

@@ -129,7 +129,7 @@ var utils = angular.module('utilities',['dummy'])
                     setUserToken(result);
                     deferred.resolve(true);
                 }, function(error) {
-                    deferred.reject(false);
+                    deferred.reject(error);
                 });
             }
             return deferred.promise;
