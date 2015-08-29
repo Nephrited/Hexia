@@ -1,5 +1,6 @@
 <ion-view view-title="Your Messages">
 	<ion-content class="has-header" padding="true">
+		<ion-refresher pulling-text="Pull to refresh..." on-refresh="reloadMessages()"></ion-refresher>
 		<ion-list>
 			<ion-item ng-repeat="tweet in messages" class="card padding">
 			<div ng-click="viewProfile(tweet.sender.screen_name)" class="userinfo">

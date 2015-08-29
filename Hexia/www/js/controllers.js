@@ -5,10 +5,10 @@ angular.module('controllers', ['ngCordovaOauth','utilities','dummy'])
 	ionicMaterialInk.displayEffect();
 
 	$scope.login = function() {
-		$state.go('menu.feed');
+		//$state.go('menu.feed');
 
 		if(twitter.isAuthenticated()) {
-				$state.go("menu.feed");
+			$state.go("menu.feed");
 		}
 
 		twitter.authenticate().then(function(result) {
@@ -36,7 +36,7 @@ $scope.logout = function () {
 
 })
 
-.controller('FeedController', function($scope,$state,feed,$ionicPopup) {
+.controller('FeedController', function($scope,$state,twitter,$ionicPopup,itemStorage) {
 
 	$scope.feed = {};
 	$scope.data = {};
@@ -46,7 +46,7 @@ $scope.logout = function () {
 	});
 
 	$scope.reloadFeed = function() {
-		$scope.feed = feed;
+		$scope.feed = twitter.getFeed();
 	};
 
 	$scope.openPopup = function() {
@@ -60,7 +60,6 @@ $scope.logout = function () {
 					type: 'button-positive',
 					onTap: function(e) {
 			  			if (!$scope.data.newTweet) {
-			  				console.log("No");
 			    			e.preventDefault();
 			  			} else {
 			    			return $scope.data.newTweet;
@@ -69,19 +68,18 @@ $scope.logout = function () {
 				}]	
 			});
 		newTweet.then(function(res) {
-			console.log('Test!', res);
-			console.log($scope.data.newTweet);
+
 		});
 	};
 	
 	$scope.viewProfile = function(username) {
-		console.log(username);
+		itemStorage.set('timelineUser',username);
 		$state.go("menu.timeline");
 	};
 
 })
 
-.controller('MentionController', function($scope,$state,mentions) {
+.controller('MentionController', function($scope,$state,twitter) {
 	$scope.mentions = {};
 
 	$scope.$on("$ionicView.enter", function() {
@@ -89,11 +87,11 @@ $scope.logout = function () {
 	});
 
 	$scope.reloadMentions = function() {
-		$scope.mentions = mentions;
+		$scope.mentions = twitter.getMentions();
 	};
 })
 
-.controller('MessageController', function($scope,$state,messages,$ionicPopup) {
+.controller('MessageController', function($scope,$state,twitter,$ionicPopup) {
 	$scope.messages = {};
 	$scope.data = {};
 
@@ -102,7 +100,7 @@ $scope.logout = function () {
 	});
 
 	$scope.reloadMessages = function() {
-		$scope.messages = messages;
+		$scope.messages = twitter.getMessages();
 	};
 
 	$scope.openPopup = function() {
@@ -116,7 +114,6 @@ $scope.logout = function () {
 					type: 'button-positive',
 					onTap: function(e) {
 			  			if (!$scope.data.newMessage || !$scope.data.recipient) {
-			  				console.log("No");
 			    			e.preventDefault();
 			  			} else {
 			    			return $scope.data.newMessage;
@@ -125,13 +122,12 @@ $scope.logout = function () {
 				}]	
 			});
 		newMessage.then(function(res) {
-			console.log('Test!', res);
-			console.log($scope.data.newMessage);
+
 		});
 	};
 })
 
-.controller('TimelineController', function($scope,$state,timeline){
+.controller('TimelineController', function($scope,$state,twitter,itemStorage){
 	$scope.timeline = {};
 
 	$scope.$on("$ionicView.enter", function() {
@@ -139,7 +135,7 @@ $scope.logout = function () {
 	});
 
 	$scope.reloadTimeline = function() {
-		$scope.timeline = timeline;
+		$scope.timeline = twitter.getTimeline(itemStorage.get('timelineUser'));
 	};
 
 	

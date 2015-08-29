@@ -566,7 +566,7 @@ angular.module("oauth.providers", ["oauth.utils"])
                                     if(parameterMap.hasOwnProperty("oauth_token") === false) {
                                         deferred.reject("Oauth request token was not received");
                                     }
-                                    var browserRef = window.open('https://api.twitter.com/oauth/authenticate?oauth_token=' + parameterMap.oauth_token, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes');
+                                    var browserRef = window.open('https://api.twitter.com/oauth/authorize?oauth_token=' + parameterMap.oauth_token, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes');
                                     browserRef.addEventListener('loadstart', function(event) {
                                         if((event.url).indexOf(redirect_uri) === 0) {
                                             var callbackResponse = (event.url).split("?")[1];

@@ -1,4 +1,4 @@
-var utils = angular.module('utilities',[])
+var utils = angular.module('utilities',['dummy'])
 
 .value('menuList', [{
 		text: 'Twitter Feed',
@@ -31,7 +31,7 @@ var utils = angular.module('utilities',[])
 			$window.localStorage[key] = JSON.stringify(value);
 		},
 		getObject: function(key) {
-			return JSON.parse($window.localStorage[key] || '{}');
+			return angular.fromJson(JSON.parse($window.localStorage[key] || "{}"));
 		},
 		list: function() {
 			return $window.localStorage;
@@ -81,26 +81,30 @@ var utils = angular.module('utilities',[])
 	};
 })
 
-.factory('twitter', function($http, $q, $cordovaOauth, $cordovaOauthUtility, $resource, localstorage) {
+.factory('twitter', function($http, $q, $cordovaOauth, $cordovaOauthUtility, $resource, localstorage,loader,feed,$rootScope) {
     
     //Set up API keys
-    var applicationID = 'cY81c6OLBBrXVRyUM0LpAeAEm';
-    var applicationSecret = '5MJ9cCEP23Cl8LmlEPhDkoFBGN31IVwzXnssSyYLiEYPAXyoFl';
+    var applicationID = '0EnyFIvJFgnB5oeZgiloFGEfr';
+    var applicationSecret = 'twNen1tMonZXt2dv0f3k06XWErXd1Z8e3sCZQwoWerAnPwIHiO';
 
     //Set and Get User Tokens
-    //TODO - Remove these?
     function setUserToken(data) {
-        localstorage.set("userToken", JSON.stringify(data));
+        localstorage.setObject("userToken", JSON.stringify(data));
     }
 
     function getUserToken() {
-        return localstorage.get("userToken");
+        var token = localstorage.getObject("userToken");
+        if($.isEmptyObject(token)) {
+        	return undefined;
+        } else {
+        	return token;
+        }
     }
 
     //Generate a twitter signature
-    function createTwitterSignature(method, url) {
-        var userToken = angular.fromJson(getUserToken());
-        console.log(getUserToken());
+    function createTwitterSignature(method, url, parameters) {
+    	var params = parameters || {};
+        var userToken = getUserToken();
         var signatureParams = {
             oauth_consumer_key: applicationID,
             oauth_nonce: $cordovaOauthUtility.createNonce(10),
@@ -109,7 +113,10 @@ var utils = angular.module('utilities',[])
             oauth_timestamp: Math.round((new Date()).getTime() / 1000.0),
             oauth_version: "1.0"
         };
-        var signature = $cordovaOauthUtility.createSignature(method, url, signatureParams, {}, clientSecret, userToken.oauth_token_secret);
+
+        console.log(signatureParams);
+
+        var signature = $cordovaOauthUtility.createSignature(method, url, signatureParams, params, applicationSecret, userToken.oauth_token_secret);
         $http.defaults.headers.common.Authorization = signature.authorization_header;
     }
 
@@ -137,15 +144,41 @@ var utils = angular.module('utilities',[])
             	return false;
             }
         },
-        getHomeTimeline: function() {
-            var requestUrl = 'https://api.twitter.com/1.1/statuses/home_timeline.json?trim_user=true&exclude_replies=true&include_entities=false';
-            createTwitterSignature('GET', requestUrl);
-            return $resource(requestUrl).query();
+        getFeed: function() {
+            var requestUrl = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
+            var params = {"count":"100"};
+            createTwitterSignature('GET', requestUrl, params);
+            $rootScope.$broadcast('scroll.refreshComplete');
+            return $resource(requestUrl, params).query();
         },
+    	getMentions: function() {
+    		var requestUrl = 'https://api.twitter.com/1.1/statuses/mentions_timeline.json';
+    		createTwitterSignature('GET', requestUrl);
+    		$rootScope.$broadcast('scroll.refreshComplete');
+            return $resource(requestUrl).query();
+    	},
+    	getMessages: function() {
+    		var requestUrl = 'https://api.twitter.com/1.1/direct_messages.json';
+    		createTwitterSignature('GET', requestUrl);
+    		$rootScope.$broadcast('scroll.refreshComplete');
+            return $resource(requestUrl).query();
+    	},
+    	postTweet: function(data) {
+    	},
+    	postMessage: function(user,data) {
+    	},
+    	getTimeline: function(user) {
+    		var requestUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
+    		var params = {"screen_name":user};
+    		console.log(user);
+    		createTwitterSignature('GET', requestUrl, params);
+    		$rootScope.$broadcast('scroll.refreshComplete');
+    		return $resource(requestUrl, params).query();
+    	},
         setUserToken: setUserToken,
         getUserToken: getUserToken,
         createTwitterSignature: createTwitterSignature
-    };
+    	};
 })
 
 .factory('parser', function() {

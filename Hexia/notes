@@ -27,3 +27,9 @@ Removed closePopup functions from classes as modals were not used
 Todo - 
 
 	Validation on new Tweets and DM's
+
+	CORS Issues - http://blog.ionic.io/handling-cors-issues-in-ionic/
+	No live server because of this
+	"This application is not allowed to access or delete your direct messages."
+
+	Had to edit cordova-oauth to switch from oauth/authenticate to oauth/authorize

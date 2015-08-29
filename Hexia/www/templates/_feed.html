@@ -1,5 +1,6 @@
 <ion-view view-title="Twitter Feed">
 	<ion-content class="has-header" padding="true">
+		<ion-refresher pulling-text="Pull to refresh..." on-refresh="reloadFeed()"></ion-refresher>
 		<ion-list>
 			<ion-item ng-repeat="tweet in feed" class="card padding">
 			<div ng-click="viewProfile(tweet.user.screen_name)" class="userinfo">
