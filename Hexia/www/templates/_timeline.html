@@ -3,6 +3,7 @@
 		<div class="bar bar-header bar-assertive" ng-show="error">
 	  		<h6 class="errorBar title">{{error}}</h6>
 		</div>
+		<ion-refresher pulling-text="Pull to refresh..." on-refresh="reloadTimeline()"></ion-refresher>
 		<div class="card padding alignmiddle">
 			<p><img class="profileimage" src="{{timeline[0].user.profile_image_url}}"><p>
 			<p>{{timeline[0].user.name}}</p>

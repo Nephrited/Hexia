@@ -1,5 +1,8 @@
 <ion-view view-title="Your Mentions">
 	<ion-content class="has-header" padding="true">
+		<div class="bar bar-header bar-assertive" ng-show="error">
+	  		<h6 class="errorBar title">{{error}}</h6>
+		</div>
 		<ion-refresher pulling-text="Pull to refresh..." on-refresh="reloadMentions()"></ion-refresher>
 		<ion-list>
 			<ion-item ng-repeat="tweet in mentions" class="card padding">

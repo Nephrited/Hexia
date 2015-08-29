@@ -33,3 +33,7 @@ Todo -
 	"This application is not allowed to access or delete your direct messages."
 
 	Had to edit cordova-oauth to switch from oauth/authenticate to oauth/authorize
+
+	Authentication errors due to malformed requests
+
+	

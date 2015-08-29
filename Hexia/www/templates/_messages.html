@@ -1,5 +1,8 @@
 <ion-view view-title="Your Messages">
 	<ion-content class="has-header" padding="true">
+		<div class="bar bar-header bar-assertive" ng-show="error">
+	  		<h6 class="errorBar title">{{error}}</h6>
+		</div>
 		<ion-refresher pulling-text="Pull to refresh..." on-refresh="reloadMessages()"></ion-refresher>
 		<ion-list>
 			<ion-item ng-repeat="tweet in messages" class="card padding">
@@ -14,6 +17,6 @@
 		</ion-list>
 	</ion-content>
 	<button id="incident-fab" class="button button-positive button-fab button-fab-bottom-right" ng-click="openPopup()">
-		<i class="icon ion-plus"></i>
+		<i class="icon ion-paper-airplane"></i>
 	</button>
 </ion-view>

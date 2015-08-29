@@ -2,15 +2,15 @@ var utils = angular.module('utilities',['dummy'])
 
 .value('menuList', [{
 		text: 'Twitter Feed',
-		icon: 'ion-home',
+		icon: 'ion-android-list',
 		state: 'menu.feed'
 	},{
 		text: 'View Mentions',
-		icon: 'ion-help',
+		icon: 'ion-android-contact',
 		state: 'menu.mentions'
 	},{
 		text: 'View Direct Messages',
-		icon: 'ion-android-exit',
+		icon: 'ion-android-chat',
 		state: 'menu.messages'
 	},{
 		text: 'Logout',
@@ -152,25 +152,25 @@ var utils = angular.module('utilities',['dummy'])
     		var requestUrl = 'https://api.twitter.com/1.1/statuses/mentions_timeline.json';
     		createTwitterSignature('GET', requestUrl);
     		$rootScope.$broadcast('scroll.refreshComplete');
-            return $resource(requestUrl).query();
+            return $resource(requestUrl);
     	},
     	getMessages: function() {
     		var requestUrl = 'https://api.twitter.com/1.1/direct_messages.json';
     		createTwitterSignature('GET', requestUrl);
     		$rootScope.$broadcast('scroll.refreshComplete');
-            return $resource(requestUrl).query();
+            return $resource(requestUrl);
     	},
     	postTweet: function(data) {
     		var requestUrl = 'https://api.twitter.com/1.1/statuses/update.json';
     		var params = {"status":data};
     		createTwitterSignature('POST', requestUrl, params);
-            return $resource(requestUrl, params).save();
+            return $resource(requestUrl, params);
     	},
     	postMessage: function(user,data) {
     		var requestUrl = 'https://api.twitter.com/1.1/direct_messages/new.json';
     		var params = {"text":data, "screen_name":user};
     		createTwitterSignature('POST', requestUrl, params);
-            return $resource(requestUrl, params).save();
+            return $resource(requestUrl, params);
     	},
     	getTimeline: function(user) {
     		var requestUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
@@ -178,7 +178,7 @@ var utils = angular.module('utilities',['dummy'])
     		console.log(user);
     		createTwitterSignature('GET', requestUrl, params);
     		$rootScope.$broadcast('scroll.refreshComplete');
-    		return $resource(requestUrl, params).query();
+    		return $resource(requestUrl, params);
     	},
         setUserToken: setUserToken,
         getUserToken: getUserToken,

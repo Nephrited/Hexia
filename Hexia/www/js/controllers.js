@@ -47,9 +47,9 @@ $scope.logout = function () {
 	});
 
 	$scope.reloadFeed = function() {
+		$scope.error = undefined;
 		var request = twitter.getFeed();
 		request.query(function(response) {
-			console.log(response);
 			$scope.feed = response;
 		}, function(error) {
 			if(error.statusText === "") {
@@ -59,12 +59,11 @@ $scope.logout = function () {
 			}
 			console.log($scope.error);
 		});
-		
 	};
 
 	$scope.openPopup = function() {
 		var newTweet = $ionicPopup.show({
-			template: '<input type="text" ng-model="data.newTweet" class="padding">',
+			template: '<input type="text" ng-model="data.newTweet" class="padding" maxlength="140">',
 			title: 'Enter Tweet',
 			scope: $scope,
 			buttons: [
@@ -81,8 +80,17 @@ $scope.logout = function () {
 				}]	
 			});
 		newTweet.then(function(res) {
+			$scope.error = undefined;
 			if(res !== undefined) {
-				twitter.postTweet(res);
+				var request = twitter.postTweet(res);
+				request.save(function(response) {
+				}, function(error) {
+					if(error.statusText === "") {
+						$scope.error = "Unable to submit";
+					} else {
+						$scope.error = error.data.errors[0].message;
+					}
+				});
 				$scope.data.newTweet = undefined;
 			}
 		});
@@ -103,7 +111,18 @@ $scope.logout = function () {
 	});
 
 	$scope.reloadMentions = function() {
-		$scope.mentions = twitter.getMentions();
+		$scope.error = undefined;
+		var request = twitter.getMentions();
+		request.query(function(response) {
+			$scope.mentions = response;
+		}, function(error) {
+			if(error.statusText === "") {
+				$scope.error = "Unable to refresh";
+			} else {
+				$scope.error = error.statusText;
+			}
+			console.log($scope.error);
+		});
 	};
 })
 
@@ -116,12 +135,23 @@ $scope.logout = function () {
 	});
 
 	$scope.reloadMessages = function() {
-		$scope.messages = twitter.getMessages();
+		$scope.error = undefined;
+		var request = twitter.getMessages();
+		request.query(function(response) {
+			$scope.messages = response;
+		}, function(error) {
+			if(error.statusText === "") {
+				$scope.error = "Unable to refresh";
+			} else {
+				$scope.error = error.statusText;
+			}
+			console.log($scope.error);
+		});
 	};
 
 	$scope.openPopup = function() {
 		var newMessage = $ionicPopup.show({
-			template: '<input type="text" ng-model="data.recipient" placeholder="Recipient" class="padding"><input type="text" ng-model="data.newMessage" placeholder="Message" class="padding">',
+			template: '<input type="text" ng-model="data.recipient" placeholder="Recipient" class="padding"><input type="text" ng-model="data.newMessage" placeholder="Message" class="padding" maxlength="140">',
 			title: 'Enter Message',
 			scope: $scope,
 			buttons: [
@@ -139,7 +169,21 @@ $scope.logout = function () {
 			});
 		newMessage.then(function(res) {
 			if(res !== undefined) {
-				twitter.postMessage(res[0],res[1]);
+				$scope.error = undefined;
+				if(res !== undefined) {
+					var request = twitter.postMessage(res[0],res[1]);
+					request.save(function(response) {
+					}, function(error) {
+						if(error.statusText === "") {
+							$scope.error = "Unable to submit";
+						} else {
+							console.log(error);
+							$scope.error = error.data.errors[0].message.split(':')[1];
+						}
+					});
+					$scope.data.newTweet = undefined;
+				}
+
 				$scope.data.recipient = undefined;
 				$scope.data.newMessage = undefined;
 			}
@@ -158,7 +202,17 @@ $scope.logout = function () {
 
 	$scope.reloadTimeline = function() {
 		$scope.error = undefined;
-		$scope.timeline = twitter.getTimeline(itemStorage.get('timelineUser'));
+		var request = twitter.getTimeline(itemStorage.get('timelineUser'));
+		request.query(function(response) {
+			$scope.timeline = response;
+		}, function(error) {
+			if(error.statusText === "") {
+				$scope.error = "Unable to refresh";
+			} else {
+				$scope.error = error.statusText;
+			}
+			console.log($scope.error);
+		});
 	};
 
 	
