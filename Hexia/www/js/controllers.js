@@ -5,8 +5,6 @@ angular.module('controllers', ['ngCordovaOauth','utilities','dummy'])
 	ionicMaterialInk.displayEffect();
 
 	$scope.login = function() {
-		//$state.go('menu.feed');
-
 		if(twitter.isAuthenticated()) {
 			$state.go("menu.feed");
 		}
@@ -18,6 +16,7 @@ angular.module('controllers', ['ngCordovaOauth','utilities','dummy'])
 			} else {
 				console.log("error!");
 			}
+			console.log("Test");
 		});
 	};
 
@@ -68,7 +67,10 @@ $scope.logout = function () {
 				}]	
 			});
 		newTweet.then(function(res) {
-
+			if(res !== undefined) {
+				twitter.postTweet(res);
+				$scope.data.newTweet = undefined;
+			}
 		});
 	};
 	
@@ -116,13 +118,17 @@ $scope.logout = function () {
 			  			if (!$scope.data.newMessage || !$scope.data.recipient) {
 			    			e.preventDefault();
 			  			} else {
-			    			return $scope.data.newMessage;
+			    			return [$scope.data.recipient,$scope.data.newMessage];
 			  			}
 					}
 				}]	
 			});
 		newMessage.then(function(res) {
-
+			if(res !== undefined) {
+				twitter.postMessage(res[0],res[1]);
+				$scope.data.recipient = undefined;
+				$scope.data.newMessage = undefined;
+			}
 		});
 	};
 })

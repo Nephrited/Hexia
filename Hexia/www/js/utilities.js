@@ -113,9 +113,6 @@ var utils = angular.module('utilities',['dummy'])
             oauth_timestamp: Math.round((new Date()).getTime() / 1000.0),
             oauth_version: "1.0"
         };
-
-        console.log(signatureParams);
-
         var signature = $cordovaOauthUtility.createSignature(method, url, signatureParams, params, applicationSecret, userToken.oauth_token_secret);
         $http.defaults.headers.common.Authorization = signature.authorization_header;
     }
@@ -164,8 +161,16 @@ var utils = angular.module('utilities',['dummy'])
             return $resource(requestUrl).query();
     	},
     	postTweet: function(data) {
+    		var requestUrl = 'https://api.twitter.com/1.1/statuses/update.json';
+    		var params = {"status":data};
+    		createTwitterSignature('POST', requestUrl, params);
+            return $resource(requestUrl, params).save();
     	},
     	postMessage: function(user,data) {
+    		var requestUrl = 'https://api.twitter.com/1.1/direct_messages/new.json';
+    		var params = {"text":data, "screen_name":user};
+    		createTwitterSignature('POST', requestUrl, params);
+            return $resource(requestUrl, params).save();
     	},
     	getTimeline: function(user) {
     		var requestUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
