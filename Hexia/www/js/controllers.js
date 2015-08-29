@@ -47,7 +47,19 @@ $scope.logout = function () {
 	});
 
 	$scope.reloadFeed = function() {
-		$scope.feed = twitter.getFeed();
+		var request = twitter.getFeed();
+		request.query(function(response) {
+			console.log(response);
+			$scope.feed = response;
+		}, function(error) {
+			if(error.statusText === "") {
+				$scope.error = "Unable to refresh";
+			} else {
+				$scope.error = error.statusText;
+			}
+			console.log($scope.error);
+		});
+		
 	};
 
 	$scope.openPopup = function() {
@@ -137,12 +149,15 @@ $scope.logout = function () {
 
 .controller('TimelineController', function($scope,$state,twitter,itemStorage){
 	$scope.timeline = {};
+	$scope.error = undefined;
 
 	$scope.$on("$ionicView.enter", function() {
+		$scope.error = undefined;
 		$scope.reloadTimeline();
 	});
 
 	$scope.reloadTimeline = function() {
+		$scope.error = undefined;
 		$scope.timeline = twitter.getTimeline(itemStorage.get('timelineUser'));
 	};
 

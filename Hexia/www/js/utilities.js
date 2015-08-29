@@ -146,7 +146,7 @@ var utils = angular.module('utilities',['dummy'])
             var params = {"count":"100"};
             createTwitterSignature('GET', requestUrl, params);
             $rootScope.$broadcast('scroll.refreshComplete');
-            return $resource(requestUrl, params).query();
+            return $resource(requestUrl, params);
         },
     	getMentions: function() {
     		var requestUrl = 'https://api.twitter.com/1.1/statuses/mentions_timeline.json';
