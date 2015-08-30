@@ -4,6 +4,12 @@ angular.module('controllers', ['ngCordovaOauth','utilities','dummy'])
 
 	ionicMaterialInk.displayEffect();
 
+	$scope.$on("$ionicView.beforeEnter", function() {
+		if(twitter.isAuthenticated()) {
+			$state.go("menu.feed");
+		}
+	});
+
 	$scope.login = function() {
 		if(twitter.isAuthenticated()) {
 			$state.go("menu.feed");
@@ -14,9 +20,8 @@ angular.module('controllers', ['ngCordovaOauth','utilities','dummy'])
 				$scope.error = undefined;
 				$state.go("menu.feed");
 			} else {
-				console.log("error!");
+				$scope.error = "Unable to Authenticate";
 			}
-			console.log("Test");
 		},function(error) {
 			$scope.error = "Unable to Authenticate";
 		});
