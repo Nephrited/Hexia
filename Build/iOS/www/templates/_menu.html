@@ -1,0 +1,28 @@
+<ion-side-menus>
+	<ion-side-menu-content drag-content="true">
+		<ion-nav-bar class="bar-positive" align-title="center">
+		<ion-nav-buttons side="left">
+			<button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+		</ion-nav-buttons>
+		<ion-nav-back-button></ion-nav-back-button>
+		</ion-nav-bar>
+		<ion-nav-view name="menuContentView"></ion-nav-view>
+	</ion-side-menu-content>
+
+	<ion-side-menu side="left" ng-controller="MenuController as menu">
+		<ion-header-bar align-title="left" class="bar-header bar-positive">
+		</ion-header-bar>
+		<ion-view>
+			<ion-content class="has-header">
+				<ion-list ng-repeat="item in menu">
+					<ion-item nav-clear menu-close ui-sref="{{item.state}}" class="item-icon-left" ng-if="item.state">
+						<i class="es-small-icon icon {{item.icon}}"></i><h3>{{item.text}}</h3>
+					</ion-item>
+					<ion-item nav-clear menu-close ng-click="{{item.click}}" class="item-icon-left" ng-if="item.click">
+						<i class="es-small-icon icon {{item.icon}}"></i><h3>{{item.text}}</h3>
+					</ion-item>
+				</ion-list>
+			</ion-content>
+		</ion-view>
+	</ion-side-menu>
+</ion-side-menus>

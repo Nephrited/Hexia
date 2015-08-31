@@ -1,0 +1,19 @@
+<ion-view view-title="Your Mentions">
+	<ion-content class="has-header" padding="true">
+		<div class="bar bar-header bar-assertive" ng-show="error">
+	  		<h6 class="errorBar title">{{error}}</h6>
+		</div>
+		<ion-refresher pulling-text="Pull to refresh..." on-refresh="reloadMentions()"></ion-refresher>
+		<ion-list>
+			<ion-item ng-repeat="tweet in mentions" class="card padding">
+			<div ng-click="viewProfile(tweet.user.screen_name)" class="userinfo">
+				<div>{{tweet.user.name}}</div>
+				<div class="subdued">@{{tweet.user.screen_name}}</div>
+			</div>
+			<span ng-click="viewProfile(tweet.user.screen_name)" class="item-avatar"><img src="{{tweet.user.profile_image_url}}"></span>
+			<p class="item-body wrapper">{{tweet.text}}</p>
+			<p class="subdued">{{tweet.created_at}}</p>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>
