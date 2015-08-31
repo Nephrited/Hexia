@@ -1,4 +1,4 @@
-angular.module('controllers', ['ngCordovaOauth','utilities','dummy'])
+angular.module('controllers', ['ngCordovaOauth','utilities'])
 
 .controller('LoginController', function($scope,$cordovaOauth,localstorage,twitter,ionicMaterialInk,$state) {
 

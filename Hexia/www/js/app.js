@@ -1,4 +1,4 @@
-angular.module('hexia', ['ionic','controllers','ngCordova','ngResource','ionic-material'])
+angular.module('hexia', ['ionic','controllers','ngResource','ionic-material'])
 
 .run(function($ionicPlatform) {
 	$ionicPlatform.ready(function() {

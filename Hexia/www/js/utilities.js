@@ -1,4 +1,4 @@
-var utils = angular.module('utilities',['dummy'])
+var utils = angular.module('utilities',[])
 
 .value('menuList', [{
 		text: 'Twitter Feed',
@@ -81,7 +81,7 @@ var utils = angular.module('utilities',['dummy'])
 	};
 })
 
-.factory('twitter', function($http, $q, $cordovaOauth, $cordovaOauthUtility, $resource, localstorage,loader,feed,$rootScope) {
+.factory('twitter', function($http, $q, $cordovaOauth, $cordovaOauthUtility, $resource, localstorage,loader,$rootScope) {
     
     //Set up API keys
     var applicationID = '0EnyFIvJFgnB5oeZgiloFGEfr';
